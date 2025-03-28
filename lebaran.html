@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Hari Raya Idul Fitri</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #1abc9c, #3498db, #9b59b6);
+            background-size: 300% 300%;
+            animation: gradientBG 10s infinite alternate;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: left; }
+            100% { background-position: right; }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 1.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            animation: popUp 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes popUp {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        p {
+            color: #34495e;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .button {
+            padding: 12px 20px;
+            font-size: 18px;
+            color: white;
+            background-color: #27ae60;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background-color: #2ecc71;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .animation {
+            font-size: 22px;
+            color: #d35400;
+            font-weight: bold;
+            animation: fadeInText 2s infinite alternate;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+
+        .ketupat {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: turunKetupat 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes turunKetupat {
+            from { top: -120px; opacity: 0; }
+            to { top: 50px; opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Ketupat.svg" alt="Ketupat" class="ketupat">
+        <h1>Selamat Hari Raya Idul Fitri 1445 H</h1>
+        <p>Mohon maaf lahir dan batin</p>
+        <button class="button" onclick="showMessage()">Klik untuk Kejutan</button>
+        <p id="message" class="hidden animation">Semoga kebahagiaan dan berkah selalu menyertai kita!</p>
+    </div>
+
+    <audio id="eidSound" src="https://www.fesliyanstudios.com/play-mp3/4385"></audio>
+
+    <script>
+        function showMessage() {
+            document.getElementById('message').classList.remove('hidden');
+            document.getElementById('eidSound').play();
+        }
+    </script>
+
+</body>
+</html>
