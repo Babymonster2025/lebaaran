@@ -15,25 +15,21 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(45deg, #1abc9c, #3498db, #9b59b6);
-            background-size: 300% 300%;
-            animation: gradientBG 10s infinite alternate;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: left; }
-            100% { background-position: right; }
+            overflow: hidden;
+            background: radial-gradient(circle, #1abc9c, #16a085);
         }
 
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             opacity: 0;
             transform: translateY(-20px);
             animation: fadeIn 1.5s forwards;
+            position: relative;
+            z-index: 2;
         }
 
         @keyframes fadeIn {
@@ -50,6 +46,24 @@
         @keyframes popUp {
             from { transform: scale(1); }
             to { transform: scale(1.1); }
+        }
+
+        .marquee {
+            width: 100%;
+            overflow: hidden;
+            position: absolute;
+            top: 10px;
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff0, 0 0 20px #ff0;
+            white-space: nowrap;
+            animation: marquee 10s linear infinite;
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
         }
 
         p {
@@ -105,9 +119,21 @@
             from { top: -120px; opacity: 0; }
             to { top: 50px; opacity: 1; }
         }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
+
+    <div class="marquee">🌙 Selamat Hari Raya Idul Fitri 1445 H - Mohon Maaf Lahir & Batin ✨</div>
 
     <div class="container">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Ketupat.svg" alt="Ketupat" class="ketupat">
@@ -117,12 +143,68 @@
         <p id="message" class="hidden animation">Semoga kebahagiaan dan berkah selalu menyertai kita!</p>
     </div>
 
+    <canvas id="confetti"></canvas>
+
     <audio id="eidSound" src="https://www.fesliyanstudios.com/play-mp3/4385"></audio>
 
     <script>
         function showMessage() {
             document.getElementById('message').classList.remove('hidden');
             document.getElementById('eidSound').play();
+            launchFireworks();
+        }
+
+        function launchFireworks() {
+            const canvas = document.getElementById("confetti");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const confettiParticles = [];
+
+            class Confetti {
+                constructor(x, y, size, color, speedY) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = size;
+                    this.color = color;
+                    this.speedY = speedY;
+                }
+
+                update() {
+                    this.y += this.speedY;
+                    if (this.y > canvas.height) {
+                        this.y = 0;
+                    }
+                }
+
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 100; i++) {
+                let size = Math.random() * 4 + 2;
+                let x = Math.random() * canvas.width;
+                let y = Math.random() * canvas.height;
+                let color = ["#FFD700", "#FF5733", "#28B463", "#3498DB"][Math.floor(Math.random() * 4)];
+                let speedY = Math.random() * 2 + 1;
+                confettiParticles.push(new Confetti(x, y, size, color, speedY));
+            }
+
+            function animateConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confettiParticles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+                requestAnimationFrame(animateConfetti);
+            }
+
+            animateConfetti();
         }
     </script>
 
